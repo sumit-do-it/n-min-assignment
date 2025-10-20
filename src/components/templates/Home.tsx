@@ -12,8 +12,6 @@ const Home = () => {
   const [data, setData] = useState<Starship[]>([]);
   const bottomTabBarHeight = useBottomTabBarHeight();
 
-  console.log("@@@ data: ", data);
-
   const renderItem = ({ item, index }: { item: Starship; index: number }) => {
     return <StarshipCard item={item} index={index} />;
   };

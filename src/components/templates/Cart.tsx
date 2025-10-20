@@ -9,10 +9,16 @@ import { observer } from "mobx-react";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import ActionButton from "components/atoms/ActionButton";
 import EmptyState from "components/atoms/EmptyState";
+import { showSuccessToast } from "utils/toastMessages";
 
 const Cart = () => {
   const [cartStore] = useStore("cartStore");
   const cartItems = cartStore.getCart();
+
+  const onPlaceOrder = () => {
+    cartStore.clearCart();
+    showSuccessToast("Order placed successfully");
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +39,7 @@ const Cart = () => {
             <Text style={styles.priceText}>AED {cartStore.totalPrice}</Text>
           </View>
           <View style={styles.footer}>
-            <ActionButton title="Place Order" onPress={() => {}} />
+            <ActionButton title="Place Order" onPress={onPlaceOrder} />
           </View>
         </>
       )}

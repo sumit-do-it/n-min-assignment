@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import StackNavigator from "navigation/StackNavigator";
 import { RootStoreProvider } from "store/rootStore";
+import Toast from "react-native-toast-message";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <StackNavigator />
         </NavigationContainer>
       </RootStoreProvider>
+      <Toast />
     </GestureHandlerRootView>
   );
 }
