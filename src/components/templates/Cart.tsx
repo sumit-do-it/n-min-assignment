@@ -16,6 +16,7 @@ const Cart = () => {
   const cartItems = cartStore.getCart();
 
   const onPlaceOrder = () => {
+    // we can mock the api call here to show the loading state using timeout
     cartStore.clearCart();
     showSuccessToast("Order placed successfully");
   };
