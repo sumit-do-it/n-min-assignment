@@ -29,6 +29,7 @@ export const theme = {
       bold: "System",
     },
     fontSize: {
+      xxs: 10,
       xs: 12,
       sm: 14,
       md: 16,
@@ -37,6 +38,7 @@ export const theme = {
       xxl: 32,
     },
     lineHeight: {
+      xxs: 14,
       xs: 16,
       smd: 18,
       sm: 20,

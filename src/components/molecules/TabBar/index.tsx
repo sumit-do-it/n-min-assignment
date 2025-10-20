@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet, TextStyle } from "react-native";
-import { useLinkBuilder, useTheme } from "@react-navigation/native";
+import { RouteProp, useLinkBuilder, useTheme } from "@react-navigation/native";
 import { PlatformPressable } from "@react-navigation/elements";
 import { theme } from "theme";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useStore } from "store/rootStore";
+import { observer } from "mobx-react";
 
 const Icons = {
   home: "home",
@@ -16,6 +18,7 @@ function TabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme();
   const { buildHref } = useLinkBuilder();
   const insets = useSafeAreaInsets();
+  const [cartStore] = useStore("cartStore");
 
   const renderBackground = (isFocused: boolean) => {
     if (!isFocused) return null;
@@ -26,6 +29,17 @@ function TabBar({ state, descriptors, navigation }) {
         exiting={FadeOutLeft.duration(100)}
       />
     );
+  };
+
+  const renderBadge = (route: RouteProp<any, any>) => {
+    if (route?.name === "Cart" && cartStore?.totalItems > 0) {
+      return (
+        <View style={styles.badgeContainer}>
+          <Text style={styles.badgeText}>{cartStore.totalItems}</Text>
+        </View>
+      );
+    }
+    return null;
   };
 
   return (
@@ -77,11 +91,14 @@ function TabBar({ state, descriptors, navigation }) {
             style={styles.itemStyle}
           >
             {renderBackground(isFocused)}
-            <FontAwesome5
-              name={Icons[route.name.toLowerCase() as keyof typeof Icons]}
-              size={16}
-              color={isFocused ? colors.primary : colors.text}
-            />
+            <View>
+              <FontAwesome5
+                name={Icons[route.name.toLowerCase() as keyof typeof Icons]}
+                size={16}
+                color={isFocused ? colors.primary : colors.text}
+              />
+              {renderBadge(route)}
+            </View>
             <Text
               style={[
                 { color: isFocused ? colors.primary : colors.text },
@@ -97,7 +114,7 @@ function TabBar({ state, descriptors, navigation }) {
   );
 }
 
-export default TabBar;
+export default observer(TabBar);
 
 const styles = StyleSheet.create({
   container: {
@@ -143,5 +160,24 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.round,
     backgroundColor: theme.colors.primary,
     zIndex: -1,
+  },
+  badgeText: {
+    fontSize: theme.typography.fontSize.xxs,
+    fontWeight: theme.typography.fontWeight.bold as TextStyle["fontWeight"],
+    lineHeight: theme.typography.lineHeight.xxs,
+    color: theme.colors.secondary,
+  },
+  badgeContainer: {
+    position: "absolute",
+    top: -9,
+    right: -9,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.round,
+    height: 18,
+    minWidth: 18,
+    paddingHorizontal: theme.spacing.xxs,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
 });

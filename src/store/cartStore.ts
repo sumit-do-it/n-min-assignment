@@ -64,6 +64,10 @@ class CartStore {
       0
     );
   }
+
+  get totalItems(): number {
+    return this.cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  }
 }
 
 export default CartStore;
